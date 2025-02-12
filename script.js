@@ -1,16 +1,14 @@
 function processFiles() {
     const stationFile = document.getElementById('stationFile').files[0];
-    const pricingFile = document.getElementById('pricingFile').files[0];
 
-    if (!stationFile || !pricingFile) {
-        alert("Please upload both station data and pricing data files.");
+    if (!stationFile) {
+        alert("Please upload the station data file.");
         return;
     }
 
-    const reader1 = new FileReader();
-    const reader2 = new FileReader();
+    const reader = new FileReader();
 
-    reader1.onload = function (e) {
+    reader.onload = function (e) {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -18,31 +16,20 @@ function processFiles() {
         updateTable();
     };
 
-    reader2.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        pricingData = XLSX.utils.sheet_to_json(sheet);
-        mapPricingData();
-        updateTable();
-    };
-
-    reader1.readAsArrayBuffer(stationFile);
-    reader2.readAsArrayBuffer(pricingFile);
+    reader.readAsArrayBuffer(stationFile);
 }
 
 let stationData = [];
-let pricingData = {};
-
-function mapPricingData() {
-    pricingData = {};
-    stationData.forEach(row => {
-        pricingData[row['Model Number']] = row['USD List Price'];
-    });
-}
+let pricingData = {
+    "CPCLD-POWER-5": 1080,
+    "CPCLD-POWER-4": 895,
+    "CPCLD-POWER-3": 685,
+    "CPCLD-POWER-2": 470,
+    "CPCLD-POWER-1": 240
+};
 
 function updateTable() {
-    if (stationData.length === 0 || Object.keys(pricingData).length === 0) return;
+    if (stationData.length === 0) return;
 
     const tbody = document.querySelector('#renewalsTable tbody');
     tbody.innerHTML = '';
