@@ -39,7 +39,12 @@ let pricingData = {
     "CPCLD-POWER-4": 895,
     "CPCLD-POWER-3": 685,
     "CPCLD-POWER-2": 470,
-    "CPCLD-POWER-1": 240
+    "CPCLD-POWER-1": 240,
+    "CPCLD-FLEETENT-5": 2000,
+    "CPCLD-FLEETENT-4": 1800,
+    "CPCLD-FLEETENT-3": 1500,
+    "CPCLD-FLEETENT-2": 1200,
+    "CPCLD-FLEETENT-1": 1000
 };
 
 function updateTable() {
