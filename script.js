@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchPricingData() {
-    const pricingFileUrl = 'https://raw.githubusercontent.com/Mantis-T0b0ggan/EVReady_Renewals/main/CP_Cloudprices_Dec24.xlsx';
+    const pricingFileUrl = 'https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/EVReady_Renewals/main/CP_Cloudprices_Dec24.xlsx';
     
     fetch(pricingFileUrl)
         .then(response => response.blob())
@@ -20,7 +20,7 @@ function fetchPricingData() {
                 pricingData = {};
                 pricingList.forEach(row => {
                     if (row['Order Code'] && row['USD List Price']) {
-                        pricingData[row['Order Code']] = row['USD List Price'];
+                        pricingData[row['Order Code'].trim()] = parseFloat(row['USD List Price']);
                     }
                 });
                 console.log("Pricing data loaded:", pricingData);
@@ -108,8 +108,8 @@ function updateRowPricing(row, sku) {
     const threeYearCost = price !== 'N/A' ? price * 3 : 'N/A';
     const fiveYearCost = price !== 'N/A' ? price * 5 : 'N/A';
 
-    row.querySelector('.skuPrice').textContent = price;
-    row.querySelector('.oneYearCost').textContent = oneYearCost;
-    row.querySelector('.threeYearCost').textContent = threeYearCost;
-    row.querySelector('.fiveYearCost').textContent = fiveYearCost;
+    row.querySelector('.skuPrice').textContent = price.toFixed(2);
+    row.querySelector('.oneYearCost').textContent = oneYearCost.toFixed(2);
+    row.querySelector('.threeYearCost').textContent = threeYearCost.toFixed(2);
+    row.querySelector('.fiveYearCost').textContent = fiveYearCost.toFixed(2);
 }
