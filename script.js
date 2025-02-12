@@ -1,7 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM fully loaded.");
     document.getElementById("processButton").addEventListener("click", processFiles);
+    fetchPricingData();
 });
+
+function fetchPricingData() {
+    const pricingFileUrl = 'https://raw.githubusercontent.com/Mantis-T0b0ggan/EVReady_Renewals/main/CP_Cloudprices_Dec24.xlsx';
+    
+    fetch(pricingFileUrl)
+        .then(response => response.blob())
+        .then(blob => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const pricingList = XLSX.utils.sheet_to_json(sheet);
+                
+                pricingData = {};
+                pricingList.forEach(row => {
+                    if (row['Order Code'] && row['USD List Price']) {
+                        pricingData[row['Order Code']] = row['USD List Price'];
+                    }
+                });
+                console.log("Pricing data loaded:", pricingData);
+            };
+            reader.readAsArrayBuffer(blob);
+        })
+        .catch(error => console.error("Error fetching pricing data:", error));
+}
 
 function processFiles() {
     console.log("Process Files button clicked.");
@@ -35,10 +62,6 @@ function processFiles() {
 
 let stationData = [];
 let pricingData = {};
-
-function loadPricingData(pricingList) {
-    pricingData = pricingList;
-}
 
 function updateTable() {
     console.log("Updating table with data:", stationData);
