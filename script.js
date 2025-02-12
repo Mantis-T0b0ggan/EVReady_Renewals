@@ -1,5 +1,16 @@
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("processButton").addEventListener("click", processFiles);
+});
+
 function processFiles() {
-    const stationFile = document.getElementById('stationFile').files[0];
+    const stationInput = document.getElementById('stationFile');
+    
+    if (!stationInput) {
+        alert("Station file input not found. Please check your HTML.");
+        return;
+    }
+
+    const stationFile = stationInput.files[0];
 
     if (!stationFile) {
         alert("Please upload the station data file.");
