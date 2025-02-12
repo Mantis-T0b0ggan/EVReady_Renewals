@@ -68,6 +68,7 @@ function updateTable() {
             <td>${row['Model Number'] || ''}</td>
             <td>${row['Station S/N'] || ''}</td>
             <td></td>
+            <td class="skuPrice">N/A</td>
             <td class="oneYearCost">N/A</td>
             <td class="threeYearCost">N/A</td>
             <td class="fiveYearCost">N/A</td>
@@ -81,10 +82,12 @@ function updateTable() {
 }
 
 function updateRowPricing(row, sku) {
-    const oneYearCost = pricingData[sku] ? pricingData[sku] * 1 : 'N/A';
-    const threeYearCost = pricingData[sku] ? pricingData[sku] * 3 : 'N/A';
-    const fiveYearCost = pricingData[sku] ? pricingData[sku] * 5 : 'N/A';
+    const price = pricingData[sku] ? pricingData[sku] : 'N/A';
+    const oneYearCost = price !== 'N/A' ? price * 1 : 'N/A';
+    const threeYearCost = price !== 'N/A' ? price * 3 : 'N/A';
+    const fiveYearCost = price !== 'N/A' ? price * 5 : 'N/A';
 
+    row.querySelector('.skuPrice').textContent = price;
     row.querySelector('.oneYearCost').textContent = oneYearCost;
     row.querySelector('.threeYearCost').textContent = threeYearCost;
     row.querySelector('.fiveYearCost').textContent = fiveYearCost;
