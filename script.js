@@ -1,29 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOM fully loaded."); // Debug log
     document.getElementById("processButton").addEventListener("click", processFiles);
 });
 
 function processFiles() {
+    console.log("Process Files button clicked."); // Debug log
+
     const stationInput = document.getElementById('stationFile');
-    
     if (!stationInput) {
-        alert("Station file input not found. Please check your HTML.");
+        console.error("Station file input not found. Please check your HTML.");
         return;
     }
 
     const stationFile = stationInput.files[0];
-
     if (!stationFile) {
-        alert("Please upload the station data file.");
+        console.warn("No file selected. Please upload a station data file.");
         return;
     }
 
-    const reader = new FileReader();
+    console.log("File detected:", stationFile.name); // Debug log
 
+    const reader = new FileReader();
     reader.onload = function (e) {
+        console.log("File successfully read."); // Debug log
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         stationData = XLSX.utils.sheet_to_json(sheet);
+
+        console.log("Parsed station data:", stationData); // Debug log
         updateTable();
     };
 
@@ -40,7 +45,12 @@ let pricingData = {
 };
 
 function updateTable() {
-    if (stationData.length === 0) return;
+    console.log("Updating table with data:", stationData); // Debug log
+
+    if (stationData.length === 0) {
+        console.warn("No data available to display.");
+        return;
+    }
 
     const tbody = document.querySelector('#renewalsTable tbody');
     tbody.innerHTML = '';
@@ -63,4 +73,6 @@ function updateTable() {
         `;
         tbody.appendChild(tr);
     });
+
+    console.log("Table updated successfully."); // Debug log
 }
