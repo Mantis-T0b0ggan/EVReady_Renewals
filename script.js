@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchPricingData() {
-    const pricingFileUrl = 'https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/EVReady_Renewals/main/CP_Cloudprices_Dec24.xlsx';
+    const pricingFileUrl = 'https://raw.githubusercontent.com/Mantis-T0b0ggan/EVReady_Renewals/main/CP_Cloudprices_Dec24.xlsx';
     
     fetch(pricingFileUrl)
         .then(response => response.blob())
